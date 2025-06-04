@@ -14,6 +14,29 @@ func (app *Application) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	loggedIn, user, message, err := app.LoginUser(input)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusAccepted)
+		return
+	}
+
+	output := struct {
+		LoggedIn bool   `json:"logged_in"`
+		User     User   `json:"user"`
+		Message  string `json:"message"`
+	}{
+		LoggedIn: loggedIn,
+		User:     user,
+		Message:  message,
+	}
+
+	err = app.writeJSON(w, http.StatusOK, output)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
 }
 
 func (app *Application) Register(w http.ResponseWriter, r *http.Request) {

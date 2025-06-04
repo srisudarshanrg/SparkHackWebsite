@@ -1,8 +1,10 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 function Register() {
     const backendLink = "http://localhost:4444"
     const [message, setMessage] = useState()
+    const navigate = useNavigate()
 
     const handleRegisterSubmit = (event) => {
         event.preventDefault()
@@ -26,6 +28,7 @@ function Register() {
             .then((data) => {
                 console.log(data)
                 setMessage(data.message)
+                navigate("/login")
             })
             .catch((error) => {
                 console.log(error)
@@ -35,6 +38,7 @@ function Register() {
     return (
         <div>
             <form method="post" onSubmit={handleRegisterSubmit} style={{"marginTop": "20%"}}>
+                <h1>Register Page</h1>
                 <label htmlFor="username"></label>
                 <input type="text" placeholder="Username" name="username" id="username" />
                 
